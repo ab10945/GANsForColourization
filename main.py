@@ -32,11 +32,12 @@ import GPUtil
 ## Arguments
 parser = argparse.ArgumentParser(description="Image Colourization with GANs.")
 parser.add_argument('--net', default="resnet-18",
-                    help="The Generator network architecture, it should be either of baseline, resnet-18, vgg-16, inception, convnext .") 
+                    help="The Generator network architecture, it should be either of baseline, resnet-18, vgg-16, inception")#, convnext .") 
 					## this allows us to create a generator network with different backbones.
 parser.add_argument("--dataset", type=str, help="The root directory of the Coco dataset.")
-parser.add_argument("--weight_initializer", default="norm", type=str, help="Weight initialization method to use, it should be either of norm,xavier,kaiming.")
-parser.add_argument("--loss", type=str, default="PSNR,MSE", help="The loss used to train the nretwork. Should be PSNR,MSE or L1,L2.")
+parser.add_argument("--GAN_Mode", default="resnet-18", type=str, help="to set the GAN criterion. If \"vanilla\", criteion is BCEwithLogits, if lsgan, criterion is \"MSE\", if PSNR, criterion is \"PSNR\" ")
+#parser.add_argument("--weight_initializer", default="norm", type=str, help="Weight initialization method to use, it should be either of norm,xavier,kaiming.")
+#parser.add_argument("--loss", type=str, default="PSNR,MSE", help="The loss used to train the nretwork. Should be PSNR,MSE or L1,L2.")
 parser.add_argument("--cpt_dir", default="checkpoint_logs", type=str, help="The directory to store check points.")
 parser.add_argument("--vis_dir", default="visualization_logs", type=str, help="The directory to store visualizations through out the job.")
 parser.add_argument("--op_dir", default="output_logs", type=str, help="The directory to store outputs suchs as loss metrics through out the job.")
@@ -94,7 +95,7 @@ def pretrain_generator(net_G, train_dl, opt, criterion, epochs):
             
         print(f"Epoch {e + 1}/{epochs}")
         print(f"Loss: {loss_meter.avg:.5f}")
-        log[str(Epoch)]=loss_meter.avg
+        log[str(epoch)]=loss_meter.avg
     
     log_Df = pd.Dataframe(log, index=[0])
     log_DF.to_csv(op_logs+"/"+args.net+"_Gen_logs.csv")
@@ -177,15 +178,15 @@ if __name__ == '__main__':
         net_G = build_inception_unet(n_input=1, n_output=2, size=256)
         opt = optim.Adam(net_G.parameters(), lr=lr)
         path_net_g = pretrain_generator(net_G, train_dl, opt, criterion, 20)
-    elif args.net == "convnext":
-        net_G = build_ConvNext_unet(n_input=1, n_output=2, size=256)
-        opt = optim.Adam(net_G.parameters(), lr=lr)
-        path_net_g = pretrain_generator(net_G, train_dl, opt, criterion, 20)
+    #elif args.net == "convnext":
+    #    net_G = build_ConvNext_unet(n_input=1, n_output=2, size=256)
+    #    opt = optim.Adam(net_G.parameters(), lr=lr)
+    #    path_net_g = pretrain_generator(net_G, train_dl, opt, criterion, 20)
     
     if net_g != None:
         net_G.load_state_dict(torch.load(path_net_g, map_location=device))
 
-    model = MainModel(net_G=net_G)
+    model = MainModel(net_G=net_G,gan_mode=g_mode)
     model = DataParallel(model)
     train_model(model, train_dl, NUM_EPOCHS)
     torch.save(model.state_dict(), cpt_logs+'/'+f'{args.net}'+'Final_gan.pt')

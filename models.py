@@ -4,7 +4,7 @@ from loss import GANLoss
 from fastai.vision.learner import create_body
 from torchvision.models.resnet import resnet18
 from torchvision.models.inception import Inception3
-from torchvision.models.convnext import convnext_small
+#from torchvision.models.convnext import convnext_small
 from torchvision.models.vgg import vgg16_bn
 from fastai.vision.models.unet import DynamicUnet
 
@@ -137,16 +137,16 @@ def build_inception_unet(n_input=1, n_output=2, size=256):
     net_G = DynamicUnet(body, n_output, (size, size)).to(device)
     return net_G
 
-def build_ConvNext_unet(n_input=1, n_output=2, size=256):
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    body = create_body(convnext_small, pretrained=True, n_in=n_input, cut=-2)
-    net_G = DynamicUnet(body, n_output, (size, size)).to(device)
-    return net_G
+#def build_ConvNext_unet(n_input=1, n_output=2, size=256):
+#    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+#    body = create_body(convnext_small, pretrained=True, n_in=n_input, cut=-2)
+#    net_G = DynamicUnet(body, n_output, (size, size)).to(device)
+#    return net_G
 
 
 
 class MainModel(nn.Module):
-    def __init__(self, net_G=None, lr_G=2e-4, lr_D=2e-4,
+    def __init__(self, net_G=None, gan_mode='vanilla',lr_G=2e-4, lr_D=2e-4,
                  beta1=0.5, beta2=0.999, lambda_L1=100.):
         super().__init__()
 
@@ -158,7 +158,7 @@ class MainModel(nn.Module):
         else:
             self.net_G = net_G.to(self.device)
         self.net_D = init_model(PatchDiscriminator(input_c=3, n_down=3, num_filters=64), self.device)
-        self.GANcriterion = GANLoss(gan_mode='vanilla').to(self.device)
+        self.GANcriterion = GANLoss(gan_mode=gan_mode).to(self.device)
         self.L1criterion = nn.L1Loss()
         self.opt_G = optim.Adam(self.net_G.parameters(), lr=lr_G, betas=(beta1, beta2))
         self.opt_D = optim.Adam(self.net_D.parameters(), lr=lr_D, betas=(beta1, beta2))

@@ -1,6 +1,6 @@
 import torch
 from torch import nn
-
+from torchmetrics import PeakSignalNoiseRatio
 
 class GANLoss(nn.Module):
     def __init__(self, gan_mode='vanilla', real_label=1.0, fake_label=0.0):
@@ -11,6 +11,8 @@ class GANLoss(nn.Module):
             self.loss = nn.BCEWithLogitsLoss()
         elif gan_mode == 'lsgan':
             self.loss = nn.MSELoss()
+        elif gan_mode == 'PSNR':
+            self.loss = PeakSignalNoiseRatio()
 
     def get_labels(self, preds, target_is_real):
         if target_is_real:
