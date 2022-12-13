@@ -2,6 +2,7 @@
 
 Dependencies to be added. - 
 1. torchmetrics. -  pip install torchmetrics or conda install -c conda-forge torchmetrics
+2. GPUtil - pip install GPUtil
 
 To execute UNet GAN with resnet18 backbone, Run the following command - 
 
