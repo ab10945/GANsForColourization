@@ -120,7 +120,7 @@ if __name__ == '__main__':
     val_idxs = rand_idxs[8000:] ## the last 2000 images are chosen as the validation set
     train_paths = paths_subset[train_idxs]
     val_paths = paths_subset[val_idxs]
-    print("count of paths to images in training set: "+f'{len(train_paths)}'+"\ncount of paths to images in validation set"+f'{len(val_paths)}')
+    print("count of paths to images in training set: "+f'{len(train_paths)}'+"\ncount of paths to images in validation set: "+f'{len(val_paths)}')
     
     ### visualizing the original dataset
     _, axes = plt.subplots(4, 4, figsize=(10, 10))
@@ -136,7 +136,7 @@ if __name__ == '__main__':
     data = next(iter(train_dl))
     Ls, abs_ = data['L'], data['ab']
     print(Ls.shape, abs_.shape)
-    print("count images in training set: "+f'{len(train_dl)}'+"\ncount of paths to images in validation set"+f'{len(val_dl)}')
+    print("count images in training set: "+f'{len(train_dl)}'+"\ncount of images in validation set"+f'{len(val_dl)}')
     
     ## Creating the GAN module.
     ## Visualizing the patch_discriminator and its output shape	
@@ -161,7 +161,8 @@ if __name__ == '__main__':
     criterion = nn.L1Loss()  
 
     lr = args.LEARNING_RATE
-
+    
+    print("creating generator network with : ",args.net)
     ## Creating the model
     if args.net == "baseline":
         net_g = None
@@ -187,10 +188,15 @@ if __name__ == '__main__':
         net_G.load_state_dict(torch.load(path_net_g, map_location=device))
 
     model = MainModel(net_G=net_G,gan_mode=g_mode)
+    print("GAN Model created.")
+    print("Model parallelized over"+f'{torch.cuda.device_count()}'+'devices')
     model = DataParallel(model)
+    print("starting training")
     train_model(model, train_dl, NUM_EPOCHS)
+    print("saving model at "+cpt_logs+'/'+f'{args.net}'+'Final_gan.pt')
     torch.save(model.state_dict(), cpt_logs+'/'+f'{args.net}'+'Final_gan.pt')
 
     ### Show GPU Utilization
+    print("checking GPU Utilization")
     GPUtil.showUtilization()
 
