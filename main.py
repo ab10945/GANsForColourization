@@ -208,7 +208,7 @@ if __name__ == '__main__':
     #with model.distrib_ctx():
     if args.Retrain == True :
         model.load_state_dict(
-                torch.load(args.pathGAN,
+                torch.load(args.pPrev,
                     map_location=device
                     )
                 )
