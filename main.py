@@ -46,7 +46,7 @@ parser.add_argument("--op_dir", default="output_logs", type=str, help="The direc
 parser.add_argument("--BATCH_SIZE", default="16", type=int, help="BATCH_SIZE.")
 parser.add_argument("--NUM_EPOCHS", default="16", type=int, help="NUM_EPOCHS.")
 parser.add_argument("--LEARNING_RATE", default="16", type=float, help="LEARNING_RATE.")
-parser.add_argument("--Retrain", default="False", type=bool, help="retraining a previously trained model")
+#parser.add_argument("--Retrain", default="False", type=bool, help="retraining a previously trained model")
 parser.add_argument("--pPrev", default="", type=str, help="path to a previously trained model")
 parser.add_argument("--path_net_g", default="", type=str, help="path to a pretrained Net_G")
 args = parser.parse_args()
@@ -156,15 +156,7 @@ if __name__ == '__main__':
     print("output shape")
     print(out.shape)
     
-    ## Defining the loss metrics   
-    
-    # if args.loss == "PSNR,MSE"
-
-    #TO BE IMPLEMENTED-
-    
-    # elif args.loss == "L1,L2" :
-    
-    ### criterion to be updated
+    ### criterion 
     criterion = nn.L1Loss()  
 
     lr = args.LEARNING_RATE
@@ -198,7 +190,7 @@ if __name__ == '__main__':
     
     if net_G != None:
         net_G.load_state_dict(torch.load(path_net_g, map_location=device))
-    
+    #print(args.Retrain) 
     g_mode = args.GAN_Mode
     model = MainModel(net_G=net_G,gan_mode=g_mode)
     print("GAN Model created.")
@@ -206,13 +198,13 @@ if __name__ == '__main__':
     #model = DataParallel(model)
     print("starting training")
     #with model.distrib_ctx():
-    if args.Retrain == True :
+    if args.pPrev != "" :
         model.load_state_dict(
                 torch.load(args.pPrev,
                     map_location=device
                     )
                 )
-    #train_model(model, train_dl, args.NUM_EPOCHS)
+    train_model(model, train_dl, args.NUM_EPOCHS)
     print("saving model at "+cpt_logs+'/'+f'{args.net}'+'Final_gan.pt')
     torch.save(model.state_dict(), cpt_logs+'/'+f'{args.net}'+'Final_gan.pt')
 
