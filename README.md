@@ -1,8 +1,18 @@
-# GANsForColourization
+# Image Colourization using Conditional Generative Adversarial Neural Networks.
+
+### Desciption -
+
+### Repository and code structure
 
 #### Dependencies to be added. - 
-1. torchmetrics. -  pip install torchmetrics or conda install -c conda-forge torchmetrics
-2. GPUtil - pip install GPUtil
+1.  Torch (version '1.9.1+cu102') - 
+    conda install pytorch==1.9.1 torchvision==0.10.1 torchaudio==0.9.1 cudatoolkit=10.2 -c pytorch 
+    or 
+    pip install torch==1.9.1+cu102 torchvision==0.10.1+cu102 torchaudio==0.9.0 -f https://download.pytorch.org/whl/torch_stable.html
+2. Fastai (version 2.4) 
+    pip install fastai==2.4
+3. GPUtil - 
+    pip install GPUtil
 
 #### To execute UNet GAN with resnet18 backbone, Run the following command - 
 
