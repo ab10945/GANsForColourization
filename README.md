@@ -108,4 +108,4 @@ Mina Pourostad (mp5737@nyu.edu)
 
 [5] Nazeri, Kamyar et al. “Image Colorization Using Generative Adversarial Networks.” AMDO (2018).
 
-
+[6] Akanbi, Dele, Intro to Generative Adversarial Networks in PyTorch - https://medium.com/@oluarolu_96212/intro-to-generative-adversarial-networks-in-pytorch-f0a5a48b9d89 
