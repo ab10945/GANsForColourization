@@ -2,6 +2,11 @@
 
 ## Desciption -
 ### Problem Statement
+Image colorization is the process of converting grayscale images to their colorful versions. In recent years, the majority of new papers researching image colorization use cGANs. cGANs condition the network on a grayscale input image and generate a color output image. In our project, we are also using cGANS.
+
+The below image is a structure of cGAN model. In our case the input to the generator model is  grayscale images. we convert the color space from RGB to L\*a\*b. In L*a*b color space 3 numbers are associated with each pixel.
+
+<img src="./images/GANChart.png" width="400" height="400">
 
 ### Solution Approach
 
@@ -28,9 +33,10 @@ Files included -
 4. loss.py - helper functions and classes for GANLoss implementation
 5. models.py - helper functions and classes to generate the different GAN models
 6. utils.py - utility functions to log loss and visualization of training/testing outputs.
+7. inference - Includes Dockerfile and config files for creating inference service in Kubernetes cluster 
 ```
 Results\visualizations folder holds 2 images, one showcases the original dataset. And one image showing the sample inference output.
-
+.
 ## Dependencies to be added. - 
 1.  Torch (version '1.9.1+cu102') - 
    ```
@@ -89,9 +95,12 @@ python infer.py --net resnet-18 --pathNetG <path_to_the_weights_of_the_resnet18>
 1. Baseline vs Res18-Unet (BCE with Logits Loss)
 The resnet 18 - unet clearly works much better than baseline. With the baseline model we have much much lower colourization. This proves that adding a resnet 18 backbone to the unet does infact allow us to extract better feature maps.
 
+<img src="./images/download-18.png" width="200" height="200"> <img src="./images/download-19.png" width="200" height="200">
+
 2. Res18-Unet (BCE with Logits Loss) vs Res18-Unet(PSNR)
 Peak Signal-to-Noise Ratio (PSNR),is computed between the generated colorized image and corresponding ground truth image. PSNR is closer to a human assessment of similarity. It can be computed as the log of inverse of MSE. A higher PSNR represents a higher reconstruction quality. At the end of training for 200 epochs, we got PSNR = 33.6 db. As per our analysis PSNR generated better results over BCELogitsLoss.
 
+<img src="./images/download-4.png" width="200" height="200"> <img src="./images/download-5.png" width="200" height="200">
 
 ## Contributors
 Anisha Bhatnagar (ab10945@nyu.edu)
