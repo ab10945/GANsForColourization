@@ -8,9 +8,9 @@ The below image is a structure of cGAN model. In our case the input to the gener
 
 <img src="./images/GANChart.png" width="400" height="400">
 
-### Solution Approach
+The first channel (L) shows the lightness of an image which when visualizing is a grayscale image and is the input to our generator model. The generator model then outputs the a and b channels, which hold information on how yellow-green and red-blue an image is. The generated example is the concatenation of the input (L channel) and output (a and b)channels. The Discriminator then classifies these images as fake or real, and based on its performance the discriminator and generator models’ weights will be updated.
 
-We started out by modifying the COCO dataset. We changed the colour scheme from RGB to LAB. where the 'L' channel encodes the lightness and 'A' and 'B' channels encode the colour information ie, how green-red or yellow-blue our image is. 'L' channel was the input to our model and 'A' and 'B' were the values to predict and match.
+### Solution Approach
 
 We based our generator network on a Unet architecture. We go 8 layers down, since our original image size was 256, after down-sampling we end up with a 1x1 image, which we then up-sample with the same mapping. The discriminator is the patch discriminator model. Conv layers, Batch Norm and Leaky Relu were stacked in both networks. The generator also had drop-out.
 
