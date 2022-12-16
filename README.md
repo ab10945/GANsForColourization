@@ -99,9 +99,13 @@ Mina Pourostad (mp5737@nyu.edu)
 
 ## References
 [1] Iizuka, S., Simo-Serra, E., & Ishikawa, H. (2016). Let there be color! Joint end-to-end learning of global and local image priors for automatic image colorization with simultaneous classification. ACM Transactions on Graphics (ToG), 35(4), 1-11.
+
 [2] Treneska S, Zdravevski E, Pires IM, Lameski P, Gievska S. GAN-Based Image Colorization for Self-Supervised Visual Feature Learning. Sensors. 2022; 22(4):1599. https://doi.org/10.3390/s22041599
+
 [3] Nazeri, Kamyar et al. “Image Colorization Using Generative Adversarial Networks.” AMDO (2018).
+
 [4] Joshi, M.R.; Nkenyereye, L.; Joshi, G.P.; Islam, S.M.R.; Abdullah-Al-Wadud, M.; Shrestha, S. Auto-Colorization of Historical Images Using Deep Convolutional Neural Networks. Mathematics 2020, 8, 2258. https://doi.org/10.3390/math8122258
+
 [5] Nazeri, Kamyar et al. “Image Colorization Using Generative Adversarial Networks.” AMDO (2018).
 
 
